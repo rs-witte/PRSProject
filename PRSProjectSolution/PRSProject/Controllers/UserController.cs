@@ -9,7 +9,7 @@ using PRSProject.Models;
 
 namespace PRSProject.Controllers
 {
-    [Route("api/[controller]")] //Defaults to https://localhost:####/api/User
+    [Route("api/Users")] //Will default to specified URL/route https://localhost:####/api/Users
     [ApiController]
     public class UserController : ControllerBase
     {
@@ -20,9 +20,9 @@ namespace PRSProject.Controllers
             _context = context;
         }
 
-        // GET: Search - ALL Users
+        // GET: List/Search - ALL Users
         // Purpose: Returns ALL information for ALL users represented on Users table
-        [HttpGet] //Defaults to api/User
+        [HttpGet] //Defaults to specified URL/route, api/Users
         public async Task<ActionResult<IEnumerable<User>>> GetAllUsers()
         {
             if (_context.Users == null)
@@ -36,7 +36,7 @@ namespace PRSProject.Controllers
         // GET: Search - By ID
         // Purpose: Returns single specified user and ALL of the user's information
         [HttpGet]
-        [Route("{id}")] //Defines precise route  - api/User/<insert Id>
+        [Route("{id}")] //Defines precise route  - api/Users/<insert Id>
         public async Task<ActionResult<User>> GetUserByID(int id)
         {
             if (_context.Users == null)
@@ -57,7 +57,7 @@ namespace PRSProject.Controllers
         // GET: Search - By Username
         // Purpose:Returns single specified user and ALL of the user's information
         [HttpGet]
-        [Route("Username/{username}")] //Defines precise route - api/User/Username/<insert username>
+        [Route("Username/{username}")] //Defines precise route - api/Users/Username/<insert username>
                                        //Could add regex to differentiate between ID vs. Username search 
         public async Task<ActionResult<User>> GetUserByUsername(string username)
         {
@@ -77,10 +77,10 @@ namespace PRSProject.Controllers
         }
 
 
-        // GET: Authentication - Search By User Credentials
+        // GET: Authentication - User Credentials
         // Purpose: Returns user information for single user, credentials (UN & PW) must exactly match entered combination
         [HttpGet]
-        [Route("{username}/{password}")] //Defines precise route - api/User/<insert username>/<insert password>
+        [Route("{username}/{password}")] //Defines precise route - api/Users/<insert username>/<insert password>
         public async Task<ActionResult<User>> GetUserCredentialsA(string username, string password)
         {
             if (_context.Users == null)
@@ -96,20 +96,22 @@ namespace PRSProject.Controllers
                 return NotFound("Invalid Credentials. Please Try Again."); //404 Error & Detail Message
             }
 
+            
             return user;
             //TODO: Return Only: ID, Firstname, Lastname, isReviewer, isAdmin 
+            //Something like ---> return _context.Users.Select(u => new u.Username, u.Firstname, u.Lastname);
         }
-       
+
 
         // PUT: Update User
         // Purpose: Update an existing user
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")] //Defines precise route - api/User/<insert Id>
+        [HttpPut("{id}")] //Defines precise route - api/Users/<insert Id>
         public async Task<IActionResult> PutUser(int id, User user)
         {
             if (id != user.ID)
             {
-                return BadRequest("ID Mismatch Detected. Cannot Modify ID."); //404 Error & Detail Message
+                return BadRequest("ID Mismatch Detected. ID Modification Not Permitted."); //404 Error & Detail Message
             }
 
             _context.Entry(user).State = EntityState.Modified;
@@ -137,7 +139,7 @@ namespace PRSProject.Controllers
         // POST: Create User
         //Purpose: Add a new user
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPost] // api/User
+        [HttpPost] //Defaults to specified URL/route, api/Users
         public async Task<ActionResult<User>> PostUser(User user)
         {
           if (_context.Users == null)
@@ -152,13 +154,13 @@ namespace PRSProject.Controllers
             return user; 
         }
 
-        // DELETE: api/User/5
+        // DELETE: Delete User
         // Purpose: Remove an existing user
-        // TODO - Considerations:
-        //    Review allowing delete without other checks could create orphans on associated tables
+        // TODO: Review allowing delete without other checks could create orphans on associated tables
         //    Review allowing cascading delete would remove user AND any associated requests and request lines
         //    Idea: Would be best to interpret DELETE request as "INACTIVATE" for users with entries on Requests and RequestLines
-        [HttpDelete("{id}")]
+        //          ---> Create/Add "isInactive" or "isActive" column to DB table
+        [HttpDelete("{id}")] //Defines precise route - api/Users/<insert Id>
         public async Task<IActionResult> DeleteUser(int id)
         {
             if (_context.Users == null)
@@ -168,7 +170,7 @@ namespace PRSProject.Controllers
             var user = await _context.Users.FindAsync(id);
             if (user == null)
             {
-                return NotFound("Invalid ID. Cannot Delete. User Does Not Exist"); //404 Error & Detail Message); //404 Error
+                return NotFound("Invalid ID. Cannot Delete. User Does Not Exist"); //404 Error & Detail Message); 
             }
 
             _context.Users.Remove(user);

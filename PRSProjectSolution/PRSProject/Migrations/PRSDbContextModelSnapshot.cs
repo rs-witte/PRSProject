@@ -40,7 +40,6 @@ namespace PRSProject.Migrations
                         .HasColumnType("nvarchar(30)");
 
                     b.Property<string>("PhotoPath")
-                        .IsRequired()
                         .HasMaxLength(255)
                         .HasColumnType("nvarchar(255)");
 
@@ -75,8 +74,10 @@ namespace PRSProject.Migrations
 
                     b.Property<string>("DeliveryMode")
                         .IsRequired()
+                        .ValueGeneratedOnAdd()
                         .HasMaxLength(20)
-                        .HasColumnType("nvarchar(20)");
+                        .HasColumnType("nvarchar(20)")
+                        .HasDefaultValue("Pickup");
 
                     b.Property<string>("Description")
                         .IsRequired()
@@ -94,11 +95,15 @@ namespace PRSProject.Migrations
 
                     b.Property<string>("Status")
                         .IsRequired()
+                        .ValueGeneratedOnAdd()
                         .HasMaxLength(10)
-                        .HasColumnType("nvarchar(10)");
+                        .HasColumnType("nvarchar(10)")
+                        .HasDefaultValue("NEW");
 
                     b.Property<decimal>("Total")
-                        .HasColumnType("decimal(11,2)");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("decimal(11,2)")
+                        .HasDefaultValue(0m);
 
                     b.Property<int>("UserId")
                         .HasColumnType("int");
@@ -122,7 +127,9 @@ namespace PRSProject.Migrations
                         .HasColumnType("int");
 
                     b.Property<int>("Quantity")
-                        .HasColumnType("int");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasDefaultValue(1);
 
                     b.Property<int>("RequestID")
                         .HasColumnType("int");
@@ -260,17 +267,21 @@ namespace PRSProject.Migrations
 
             modelBuilder.Entity("PRSProject.Models.RequestLine", b =>
                 {
-                    b.HasOne("PRSProject.Models.Product", null)
+                    b.HasOne("PRSProject.Models.Product", "Product")
                         .WithMany("RequestLines")
                         .HasForeignKey("ProductID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("PRSProject.Models.Request", null)
+                    b.HasOne("PRSProject.Models.Request", "Request")
                         .WithMany("RequestLines")
                         .HasForeignKey("RequestID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Product");
+
+                    b.Navigation("Request");
                 });
 
             modelBuilder.Entity("PRSProject.Models.Product", b =>

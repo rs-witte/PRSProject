@@ -261,3 +261,4 @@ C:\repos\PRSProject\BackendWebAPI\PRSProjectSolution\PRSProject\bin\Debug\net6.0
 C:\repos\PRSProject\BackendWebAPI\PRSProjectSolution\PRSProject\bin\Debug\net6.0\Swashbuckle.AspNetCore.SwaggerGen.dll
 C:\repos\PRSProject\BackendWebAPI\PRSProjectSolution\PRSProject\bin\Debug\net6.0\Swashbuckle.AspNetCore.SwaggerUI.dll
 C:\repos\PRSProject\BackendWebAPI\PRSProjectSolution\PRSProject\obj\Debug\net6.0\PRSProject.MvcApplicationPartsAssemblyInfo.cs
+C:\repos\PRSProject\BackendWebAPI\PRSProjectSolution\PRSProject\bin\Debug\net6.0\PRSProject.staticwebassets.runtime.json

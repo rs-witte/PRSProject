@@ -9,7 +9,7 @@ using PRSProject.Models;
 
 namespace PRSProject.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/Products")] //Will default to specified URL/route https://localhost:####/api/Products
     [ApiController]
     public class ProductController : ControllerBase
     {
@@ -20,43 +20,46 @@ namespace PRSProject.Controllers
             _context = context;
         }
 
-        // GET: api/Product
-        [HttpGet]
+        // GET: List/Search - ALL Products
+        // Purpose: Returns ALL information for ALL products represented on table
+        [HttpGet] //Defaults to specified URL/route, api/Products
         public async Task<ActionResult<IEnumerable<Product>>> GetProducts()
         {
           if (_context.Products == null)
           {
-              return NotFound();
-          }
+              return NotFound("Expected Database Table Missing."); //404 Error & Detail Message
+            }
             return await _context.Products.ToListAsync();
         }
 
-        // GET: api/Product/5
-        [HttpGet("{id}")]
+        // GET: Search - By ID
+        // Purpose: Returns single specified product and ALL of the product's information
+        [HttpGet("{id}")]//Defines precise route  - api/Products/<insert Id>
         public async Task<ActionResult<Product>> GetProduct(int id)
         {
           if (_context.Products == null)
           {
-              return NotFound();
-          }
+              return NotFound("Expected Database Table Missing."); //404 Error & Detail Message
+            }
             var product = await _context.Products.FindAsync(id);
 
             if (product == null)
             {
-                return NotFound();
+                return NotFound("Invalid Product ID. Match Not Found."); //404 Error & Detail Message
             }
 
             return product;
         }
 
-        // PUT: api/Product/5
+        // PUT: Update Product
+        // Purpose: Update an existing product 
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")]
+        [HttpPut("{id}")] //Defines precise route - api/Products/<insert Id>
         public async Task<IActionResult> PutProduct(int id, Product product)
         {
             if (id != product.Id)
             {
-                return BadRequest();
+                return BadRequest("ID Mismatch Detected. Cannot Modify ID."); //404 Error & Detail Message
             }
 
             _context.Entry(product).State = EntityState.Modified;
@@ -69,7 +72,7 @@ namespace PRSProject.Controllers
             {
                 if (!ProductExists(id))
                 {
-                    return NotFound();
+                    return NotFound("Invalid ID. Product Does Not Exist"); //404 Error & Detail Message
                 }
                 else
                 {
@@ -80,9 +83,10 @@ namespace PRSProject.Controllers
             return NoContent();
         }
 
-        // POST: api/Product
+        // POST: Create a product
+        // Purpose: Add a new product 
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPost]
+        [HttpPost] //Defaults to specified URL/route, api/Products
         public async Task<ActionResult<Product>> PostProduct(Product product)
         {
           if (_context.Products == null)
@@ -95,18 +99,19 @@ namespace PRSProject.Controllers
             return CreatedAtAction("GetProduct", new { id = product.Id }, product);
         }
 
-        // DELETE: api/Product/5
-        [HttpDelete("{id}")]
+        // DELETE: Delete Product
+        // Purpose: Remove an existing product
+        [HttpDelete("{id}")] //Defines precise route - api/Products/<insert Id>
         public async Task<IActionResult> DeleteProduct(int id)
         {
             if (_context.Products == null)
             {
-                return NotFound();
+                return NotFound("Expected Database Table Missing."); //404 Error & Detail Message
             }
             var product = await _context.Products.FindAsync(id);
             if (product == null)
             {
-                return NotFound();
+                return NotFound("Invalid ID. Cannot Delete. User Does Not Exist"); //404 Error & Detail Message); 
             }
 
             _context.Products.Remove(product);

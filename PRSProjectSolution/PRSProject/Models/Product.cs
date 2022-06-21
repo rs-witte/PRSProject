@@ -25,15 +25,12 @@ namespace PRSProject.Models
 
         [StringLength(255)]
         public string? PhotoPath { get; set; } //Nullable
-        //TODO: Might need to rebuild DB to correct PhotoPath property setting if it's not supposed to be required
-        //TODO: OR ask if there should be a default file and file path used for products without an image ("No Image Available" image)
+        //TODO: OPTIONAL - set default image file and file path for products without an image ("No Image Available")
         
         public int VendorId { get; set; } //FOREIGN KEY (see Vendor table ID column)
 
         [JsonIgnore]
         public List<RequestLine>? RequestLines { get; set; } //Product ID is a FOREIGN KEY on Requests table
-
-
 
     }
 }

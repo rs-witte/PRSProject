@@ -9,7 +9,7 @@ using PRSProject.Models;
 
 namespace PRSProject.Controllers
 {
-    [Route("api/[controller]")] //Defaults to https://localhost:####/api/Vendor
+    [Route("api/Vendors")] //Will default to specified URL/route https://localhost:####/api/Vendors
     [ApiController]
     public class VendorController : ControllerBase
     {
@@ -20,9 +20,9 @@ namespace PRSProject.Controllers
             _context = context;
         }
 
-        // GET: Search - ALL Vendors
+        // GET: List/Search - ALL Vendors
         // Purpose: Returns ALL information for ALL vendors represented on Vendors table
-        [HttpGet] //Defaults to api/Vendor
+        [HttpGet] //Defaults to specified URL/route, api/Vendors
         public async Task<ActionResult<IEnumerable<Vendor>>> GetVendors()
         {
           if (_context.Vendors == null)
@@ -34,7 +34,7 @@ namespace PRSProject.Controllers
 
         // GET: Search - By ID
         // Purpose: Returns single specified user and ALL of the user's information
-        [HttpGet("{id}")] //Defines precise route  - api/Vendor/<insert Id>
+        [HttpGet("{id}")] //Defines precise route  - api/Vendors/<insert Id>
         public async Task<ActionResult<Vendor>> GetVendor(int id)
         {
           if (_context.Vendors == null)
@@ -51,8 +51,8 @@ namespace PRSProject.Controllers
             return vendor;
         }
 
-        //// GET: Search - By Name
-        //// Purpose:Returns vendors meeting search criteria ("like/contains") and ALL information for matching vendor(s)
+        // TODO: GET: Search - By Name
+        // Purpose:Returns vendors meeting search criteria ("like/contains") and ALL information for matching vendor(s)
         //[HttpGet]
         //[Route("VendorName/{name}")] //Defines precise route - api/User/Username/<insert username>
         //                               //Could add regex to differentiate between ID vs. Username search 
@@ -77,7 +77,7 @@ namespace PRSProject.Controllers
         // PUT: Update Vendor
         //Purpose: Update an existing vendor
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")] //Defines precise route - api/Vendor/<insert Id>
+        [HttpPut("{id}")] //Defines precise route - api/Vendors/<insert Id>
         public async Task<IActionResult> PutVendor(int id, Vendor vendor)
         {
             if (id != vendor.Id)
@@ -110,7 +110,7 @@ namespace PRSProject.Controllers
         // POST: Create Vendor
         // Purpose: Add a new Vendor
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPost]
+        [HttpPost] //Defaults to specified URL/route, api/Vendors
         public async Task<ActionResult<Vendor>> PostVendor(Vendor vendor)
         {
           if (_context.Vendors == null)
@@ -126,11 +126,11 @@ namespace PRSProject.Controllers
 
         // DELETE: Delete Vendor
         // Purpose: Delete an existing vendor
-        // TODO - Considerations:
-        //    Review allowing delete without other checks, could create orphans on associated table(s)
+        // TODO: Review allowing vendor delete without other checks, could create orphans on associated table(s)
         //    Cascading delete likely wouldn't be ideal, removes vendor AND any associated data on other table(s)
         //    Idea: Would be best to interpret DELETE request as "INACTIVATE" for vendors with related entries on other table(s)
-        [HttpDelete("{id}")] //Defines precise route - api/Vendor/<insert Id>
+        //          ---> Add "isInactive" or "isActive" column to DB table
+        [HttpDelete("{id}")] //Defines precise route - api/Vendors/<insert Id>
         public async Task<IActionResult> DeleteVendor(int id)
         {
             if (_context.Vendors == null)

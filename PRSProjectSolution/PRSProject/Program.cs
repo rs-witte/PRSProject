@@ -22,7 +22,9 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseHttpsRedirection();
+app.UseStaticFiles(); //Products DB (PhotoPath), See wwwroot
+
+//app.UseHttpsRedirection();
 //app.UseRewriter(new Microsoft.AspNetCore.Rewrite.RewriteOptions().AddRewrite("", ".xml", true));
 app.UseAuthorization();
 app.MapControllers();

@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace PRSProject.Models
 {
@@ -11,7 +12,15 @@ namespace PRSProject.Models
 
         public int ProductID { get; set; }  //FOREIGN KEY (see Product table ID column)
 
-        public int Quantity { get; set; }  //DEFAULT: 1 - Note: Cannot be set to negative (0+)
+        [Range(0, int.MaxValue)] //Defines min and max range for Quantity
+        public int Quantity { get; set; } //DEFAULT: 1  (See PRSDbContext)
 
+        [JsonIgnore]
+        public virtual Product? Product { get; set; }
+
+        [JsonIgnore]
+        public virtual Request? Request { get; set; }
+        
     }
 }
+
