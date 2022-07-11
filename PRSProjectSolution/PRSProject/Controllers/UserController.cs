@@ -81,7 +81,7 @@ namespace PRSProject.Controllers
         // Purpose: Returns user information for single user, credentials (UN & PW) must exactly match entered combination
         [HttpGet]
         [Route("{username}/{password}")] //Defines precise route - api/Users/<insert username>/<insert password>
-        public async Task<ActionResult<User>> GetUserCredentialsA(string username, string password)
+        public async Task<ActionResult<User>> GetUserCredentials(string username, string password)
         {
             if (_context.Users == null)
             {

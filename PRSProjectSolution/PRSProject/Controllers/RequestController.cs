@@ -41,7 +41,8 @@ namespace PRSProject.Controllers
           {
               return NotFound("Expected Database Table Missing."); //404 Error & Detail Message
             }
-            var request = await _context.Requests.FindAsync(id);
+            var request = await _context.Requests.Include(r => r.User).Include(r => r.RequestLines).Where(r => r.Id == id).FirstOrDefaultAsync();
+
 
             if (request == null)
             {
@@ -65,7 +66,7 @@ namespace PRSProject.Controllers
         
             if (requests == null)
             {
-                return NotFound("Invalid Request ID. Match Not Found."); //404 Error & Detail Message
+                return NotFound("Match Not Found."); //404 Error & Detail Message
             }
 
             return requests;

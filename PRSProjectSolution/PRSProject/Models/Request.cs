@@ -30,8 +30,12 @@ namespace PRSProject.Models
         public decimal Total { get; set; }  // DEFAULT: 0 - Note: Cannot be set by user, auto-calc (set by app)
 
         public int UserId { get; set; } //FOREIGN KEY (see User table ID column)
+        
+        //NAVIGATION PROPERTIES
+        //[JsonIgnore]
+        public virtual User? User { get; set; } = null!;
 
-        [JsonIgnore]
+        //[JsonIgnore] - Commented out to allow pulling Requestlines
         public List<RequestLine>? RequestLines { get; set; } //Request ID is a FOREIGN KEY on Request Lines table
     }
 }
